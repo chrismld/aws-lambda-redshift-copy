@@ -25,6 +25,7 @@ def handler(event, context):
                                 + " password=" + db_password
                                 + " port=" + db_port
                                 + " host=" + db_host)
+		conn.autocommit = True
 
         query_type = query_prefix + key.split('/')[0] + '.sql'
 
@@ -50,7 +51,6 @@ def handler(event, context):
 def copy_to_redshift(bucket, conn, cur, key, query_type):
     query = get_copy_query(bucket, key, query_type, query_bucket)
     cur.execute(query)
-    conn.commit()
 
 
 def is_file_already_copied(bucket, cur, key):
